@@ -1,9 +1,18 @@
-import { Injectable, NestMiddleware } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 
-@Injectable()
-export class HelloMiddleware implements NestMiddleware {
-  use(req: any, res: any, next: () => void) {
-    res.send('Hello, this is a middleware function');
-    next();
-  }
+// @Injectable()
+// export class HelloMiddleware implements NestMiddleware {
+//   use(req: Request, res: Response, next: NextFunction) {
+//     console.log('Request...');
+//     next();
+//   }
+// }
+
+export function HelloMiddleware(
+  req: Request,
+  res: Response,
+  next: NextFunction,
+) {
+  console.log(`Hello, this is a middleware`);
+  next();
 }

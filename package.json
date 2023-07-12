@@ -29,7 +29,7 @@
     "axios": "^1.4.0",
     "bull": "^4.10.4",
     "cache-manager": "^5.2.3",
-    "cache-manager-redis-store": "^3.0.1",
+    "cache-manager-redis-store": "^2.0.0",
     "cache-manager-redis-yet": "^4.1.2",
     "install": "^0.13.0",
     "node-cache-manager": "^1.2.0",

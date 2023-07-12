@@ -12,20 +12,21 @@ export class ProductService {
 
   async getProduct(id: number): Promise<string> {
     // check if data is in cache:
-    const cachedData = await this.cacheService.get<{ name: string }>(
-      id.toString(),
-    );
+    const cachedData = await this.cacheService.get('product:' + id.toString());
+
     if (cachedData) {
       console.log(`Getting data from cache!`);
-      return `${cachedData.name}`;
+      return await `${cachedData}`;
     }
 
     // if not, call API and set the cache:
     const { data } = await this.httpService.axiosRef.get(
       `https://dummyjson.com/products/${id}`,
     );
-    await this.cacheService.set(id.toString(), data);
+
+    // Default: 5s expiration
+    await this.cacheService.set('product:' + id.toString(), data.title, 6000);
+
     return await `${data.title}`;
   }
-
 }
