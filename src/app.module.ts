@@ -8,6 +8,9 @@ import { redisStore } from 'cache-manager-redis-yet';
 import { BullModule } from '@nestjs/bull';
 import { MessageModule } from './message/message.module';
 import { FileModule } from './file/file.module';
+import { AuthorizedModule } from './authorized/authorized.module';
+import { LoginController } from './login/login.controller';
+import { LoginService } from './login/login.service';
 
 @Module({
   imports: [
@@ -31,10 +34,11 @@ import { FileModule } from './file/file.module';
       },
     }),
     MessageModule,
-    FileModule
+    FileModule,
+    AuthorizedModule
   ],
-  providers: [AppService],
-  controllers: [AppController],
+  providers: [AppService, LoginService],
+  controllers: [AppController, LoginController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
