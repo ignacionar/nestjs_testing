@@ -1,10 +1,16 @@
+import { BullModule } from '@nestjs/bull';
 import { Module } from '@nestjs/common';
-import { MessageConsumer } from './message.consumer';
+import { MessageConsumer } from './message.consumer.service';
 import { MessageController } from './message.controller';
-import { MessageService } from './message.service';
+import { MessageProducerService } from './message.producer.service';
 
 @Module({
-  providers: [MessageConsumer, MessageService],
+  imports: [
+    BullModule.registerQueue({
+      name: 'message-queue',
+    }),
+  ],
+  providers: [MessageConsumer, MessageProducerService],
   controllers: [MessageController],
 })
 export class MessageModule {}

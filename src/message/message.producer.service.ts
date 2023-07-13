@@ -3,7 +3,7 @@ import { Injectable } from '@nestjs/common';
 import { Queue } from 'bull';
  
 @Injectable()
-export class MessageService {
+export class MessageProducerService {
   constructor(@InjectQueue('message-queue') private queue: Queue) {}
 
   async sendMessage(message: string) {

@@ -1,9 +1,9 @@
 import { Controller, Query, Get } from '@nestjs/common';
-import { MessageService } from './message.service';
+import { MessageProducerService } from './message.producer.service';
 
 @Controller('message')
 export class MessageController {
-  constructor(private readonly messageProducerService: MessageService) {}
+  constructor(private readonly messageProducerService: MessageProducerService) {}
 
   @Get('invoke-message')
   // @Get()
