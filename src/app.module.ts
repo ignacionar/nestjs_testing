@@ -11,9 +11,22 @@ import { FileModule } from './file/file.module';
 import { AuthorizedModule } from './authorized/authorized.module';
 import { LoginController } from './login/login.controller';
 import { LoginService } from './login/login.service';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import { ClientsModule, Transport } from '@nestjs/microservices';
+import { RedismicroserviceController } from './redismicroservice/redismicroservice.controller';
+import { RedismicroserviceService } from './redismicroservice/redismicroservice.service';
 
 @Module({
   imports: [
+    ClientsModule.register([{
+      name: 'NUMBER_SERVICE',
+      transport: Transport.REDIS,
+      options: {
+        host: 'localhost',
+        port: 6379
+      }
+    }]),
+    ConfigModule.forRoot(),
     CacheModule.registerAsync({
       isGlobal: true,
       useFactory: async () => ({
@@ -27,18 +40,22 @@ import { LoginService } from './login/login.service';
       }),
     }),
     ProductModule,
-    BullModule.forRoot({
-      redis: {
-        host: 'localhost',
-        port: 6379,
-      },
+    BullModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: async (service: ConfigService) => ({
+        redis: {
+          host: service.get('REDIS_HOST'),
+          port: service.get('REDIS_PORT')
+        }
+      }),
     }),
     MessageModule,
     FileModule,
-    AuthorizedModule
+    AuthorizedModule,
   ],
-  providers: [AppService, LoginService],
-  controllers: [AppController, LoginController],
+  providers: [AppService, LoginService, RedismicroserviceService],
+  controllers: [AppController, LoginController, RedismicroserviceController],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

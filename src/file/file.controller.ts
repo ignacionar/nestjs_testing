@@ -9,6 +9,6 @@ export class FileController {
   async name(@Param('id') file: string) {
     await this.service.deleteFile(file);
 
-    return `Deleted file`;
+    return `Deleted file: ` + `${file}`;
   }
 }

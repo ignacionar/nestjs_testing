@@ -26,7 +26,7 @@ export class LoginService {
         const idToken = await user.getIdToken();
         return idToken;
       }
-      
+
     } catch (error) {
       console.error(error);
     }
